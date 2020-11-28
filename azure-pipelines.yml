@@ -96,10 +96,10 @@ stages:
         appName: '$(appname)'
         containers: $(container)
 
-- stage: E2E_Tests
+- stage: E2E_Tests_Browser
   displayName: E2E Selenium Tests
 
-- stage: E2E_Tests
+- stage: E2E_Tests_Perf
   displayName: E2E Performance Tests
   variables:
     #test execution environment & config
