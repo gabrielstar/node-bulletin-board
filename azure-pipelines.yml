@@ -62,7 +62,26 @@ variables:
   armServiceConnection: boostAzureServiceConnection
   appName: appxx
   container: appxx.azurecr.io/appxx-img:latest
-
+  #crux
+  #test execution environment & config
+  cluster_namespace: crux$(Build.BuildID)
+  kubernetesServiceConnection: ${{ parameters.kubernetes_service_connection }}
+  scale_up_replicas: ${{ parameters.jmeter_slaves }}
+  data_dir: $(repoName)/${{ parameters.data_dir }}
+  data_dir_relative: ${{ parameters.data_dir }}
+  crux_file: $(repoName)/path/to/jmeter/config/crux.properties
+  thresholds_file: $(repoName)/path/to/jmeter/config/thresholds.properties
+  workbooks_file: $(repoName)/path/to/jmeter/config/workbooks.properties
+  jmeter_args: ${{ parameters.jmeter_args }}
+  repoName: node-bulletin-board
+  cruxRepoName: crux
+  scenario: $(repoName)/${{ parameters.jmx }}
+  #parameters of cluster if to be created (jmeter_dynamic)
+  armServiceConnection2: ${{ parameters.arm_service_connection }}
+  clusterNodeSize: Standard_D2_v2
+  clusterNodeNumber: 2
+  rgroup: jmeter-group
+  namespace: default
 stages:
 - stage: Build
   displayName: Build and Push docker image
@@ -98,34 +117,12 @@ stages:
 
 - stage: E2E_Tests
   displayName: E2E Selenium Tests
-  variables:
-    #test execution environment & config
-    cluster_namespace: crux$(Build.BuildID)
-    kubernetesServiceConnection: ${{ parameters.kubernetes_service_connection }}
-    scale_up_replicas: ${{ parameters.jmeter_slaves }}
-    data_dir: $(repoName)/${{ parameters.data_dir }}
-    data_dir_relative: ${{ parameters.data_dir }}
-    crux_file: $(repoName)/path/to/jmeter/config/crux.properties
-    thresholds_file: $(repoName)/path/to/jmeter/config/thresholds.properties
-    workbooks_file: $(repoName)/path/to/jmeter/config/workbooks.properties
-    jmeter_args: ${{ parameters.jmeter_args }}
-    repoName: node-bulletin-board
-    cruxRepoName: crux
-    scenario: $(repoName)/${{ parameters.jmx }}
-
-
-    #parameters of cluster if to be created (jmeter_dynamic)
-    armServiceConnection: ${{ parameters.arm_service_connection }}
-    clusterNodeSize: Standard_D2_v2
-    clusterNodeNumber: 2
-    rgroup: jmeter-group
-    namespace: default
   jobs:
   - template: run.jmeter.kubernetes.template.yaml
     parameters:
       mode: ${{ parameters.mode }}
       linux_pool: microsoft_hosted
-      arm_service_connection: ${{ parameters.arm_service_connection }}
+      arm_service_connection: ${{ parameters.arm_service_connection2 }}
       kubernetes_service_connection: ${{ parameters.kubernetes_service_connection }}
       crux_job_timeout: 15
       step_timeout: 2
