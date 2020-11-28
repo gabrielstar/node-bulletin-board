@@ -1,0 +1,22 @@
+parameters:
+  mode: jmeter
+steps:
+  - ${{ if not(eq(parameters.mode,'tests')) }}:
+    - task: AzureCLI@2
+      condition: always()
+      displayName: Delete dedicated nodepool
+      inputs:
+        azureSubscription: $(armServiceConnection)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+           nodepool_name=crux$(Build.BuildID)
+           cluster_name=k8
+           if [ -z "$(cname)" ]; then
+            echo ""
+           else
+            cluster_name="$(cname)"
+           fi
+           resource_group=jmeter-group
+           echo "Deleting pool on $cluster_name... "
+           az aks nodepool delete -g "$resource_group" --cluster-name "$cluster_name" --name "$nodepool_name" --no-wait
