@@ -5,7 +5,7 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 variables:
-  imageName: 'appxx.azurecr.io/appxx-img'
+  imageName: 'appxx-img'
   dockerfilePath: 'bulletin-board-app/Dockerfile'
   dockerRegistryServiceConnection: boostRegistryServiceConnection
 
