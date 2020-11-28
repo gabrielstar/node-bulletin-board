@@ -71,7 +71,4 @@ stages:
         echo "I would run Selenium here"
       displayName: Selenium Tests
 
-- stage: E2E_PerfTests
-  displayName: E2E Performance Tests
-  jobs:
-  - template: run.jmeter.kubernetes.ci.yaml
+- template: run.jmeter.kubernetes.ci.yaml
