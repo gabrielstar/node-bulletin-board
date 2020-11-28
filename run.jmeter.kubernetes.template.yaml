@@ -30,29 +30,6 @@ parameters:
   - name: arm_service_connection #used on compile time
     default: _
 
-variables:
-  #test execution environment & config
-  cluster_namespace: crux$(Build.BuildID)
-  kubernetesServiceConnection: ${{ parameters.kubernetes_service_connection }}
-  scale_up_replicas: ${{ parameters.jmeter_slaves }}
-  data_dir: $(repoName)/${{ parameters.data_dir }}
-  data_dir_relative: ${{ parameters.data_dir }}
-  crux_file: $(repoName)/path/to/jmeter/config/crux.properties
-  thresholds_file: $(repoName)/path/to/jmeter/config/thresholds.properties
-  workbooks_file: $(repoName)/path/to/jmeter/config/workbooks.properties
-  jmeter_args: ${{ parameters.jmeter_args }}
-  repoName: node-bulletin-board
-  cruxRepoName: crux
-  scenario: $(repoName)/${{ parameters.jmx }}
-
-
-  #parameters of cluster if to be created (jmeter_dynamic)
-  armServiceConnection: ${{ parameters.arm_service_connection }}
-  clusterNodeSize: Standard_D2_v2
-  clusterNodeNumber: 2
-  rgroup: jmeter-group
-  namespace: default
-
 jobs:
   - job: Jmeter
     timeoutInMinutes: ${{ parameters.crux_job_timeout }}
