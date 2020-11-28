@@ -70,7 +70,7 @@ variables:
   thresholds_file: $(repoName)/path/to/jmeter/config/thresholds.properties
   workbooks_file: $(repoName)/path/to/jmeter/config/workbooks.properties
   jmeter_args: ${{ parameters.jmeter_args }}
-  repoName: jmeter_simple_test
+  repoName: node-bulletin-board
   cruxRepoName: crux
   scenario: $(repoName)/${{ parameters.jmx }}
 
