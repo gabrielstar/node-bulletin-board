@@ -57,8 +57,4 @@ stages:
 - stage: E2E_PerfTests
   displayName: E2E Performance Tests
   jobs:
-  - job:
-    steps:
-    - bash: |
-        echo "I would run Selenium here"
-      displayName: JMeter Tests
+  - template: run.jmeter.kubernetes.ci.yaml
