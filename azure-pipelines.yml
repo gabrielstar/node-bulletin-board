@@ -14,7 +14,7 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build and push stage
+  displayName: Build and Push docker image
   jobs:  
   - job: Build
     displayName: Build job
@@ -28,7 +28,14 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           latest
+
+- stage: Deploy
+  displayName: Deploy App
+  jobs:
+  - job:
+    steps:
     - task: AzureWebAppContainer@1 # Add this at the end of your file
+      displayName: Deploy
       inputs:
         azureSubscription: '$(armServiceConnection)'
         appName: '$(appname)'
