@@ -21,7 +21,7 @@ stages:
     steps:
     - bash: |
         echo "I would run unit,integration tests here"
-      displayName: Tests
+      displayName: Unit and Integration Tests
       
     - task: Docker@2
       displayName: Build and push an image to container registry
@@ -61,4 +61,4 @@ stages:
     steps:
     - bash: |
         echo "I would run Selenium here"
-      displayName: Performance Tests
+      displayName: JMeter Tests
