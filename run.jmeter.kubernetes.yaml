@@ -13,7 +13,7 @@ resources:
       type: github
       name: ObjectivityLtd/crux
       #ref: refs/tags/0.4.1
-      #ref: refs/heads/feature/parametrization
+      ref: refs/heads/feature/parametrization
       endpoint: crux
 
     - repository: tests
