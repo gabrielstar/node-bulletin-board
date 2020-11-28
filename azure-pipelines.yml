@@ -23,7 +23,7 @@ parameters:
     type: number
 
   - name: jmx
-    default: path/to/jmeter/script/bing.jmx
+    default: path/to/jmeter/script/bulletin.jmx
     type: string
 
   - name: jmeter_args
@@ -116,8 +116,11 @@ stages:
         appName: '$(appname)'
         containers: $(container)
 
+- stage: E2E_Tests_Sel
+  displayName: E2E Tests Selenium
+
 - stage: E2E_Tests
-  displayName: E2E Selenium Tests
+  displayName: E2E Tests Performance
   jobs:
   - template: run.jmeter.kubernetes.template.yaml
     parameters:

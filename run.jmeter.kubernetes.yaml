@@ -40,7 +40,7 @@ parameters:
   type: number
 
 - name: jmx
-  default: path/to/jmeter/script/bing.jmx
+  default: path/to/jmeter/script/bulletin.jmx
   type: string
 
 - name: jmeter_args
