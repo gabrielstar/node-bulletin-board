@@ -98,6 +98,13 @@ stages:
 
 - stage: E2E_Tests_Browser
   displayName: E2E Selenium Tests
+  jobs:
+  - job: Test
+    displayName: Selenium Tests
+    steps:
+      - bash: |
+          echo "I would run selenium  tests here"
+        displayName: Selenium tests
 
 - stage: E2E_Tests_Perf
   displayName: E2E Performance Tests
