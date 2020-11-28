@@ -14,7 +14,7 @@ resources:
       name: ObjectivityLtd/crux
       #ref: refs/tags/0.4.1
       #ref: refs/heads/feature/parametrization
-      endpoint: gabrielstar
+      endpoint: crux
 
     - repository: tests
       type: github
@@ -22,7 +22,7 @@ resources:
       #ref: refs/tags/0.3.2
       #ref: refs/heads/feature/parametrization
       #ref: refs/tags/0.4.1
-      endpoint: gabrielstar
+      endpoint: crux
 
 
 parameters:
