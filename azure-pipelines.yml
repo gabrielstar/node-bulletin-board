@@ -6,11 +6,21 @@ pool:
 
 variables:
   imageName: 'appxx.azurecr.io/appxx-img'
+  dockerfilePath: 'bulletin-board-app/Dockerfile'
 
-steps:
-- task: Docker@2
-  displayName: Build an image
-  inputs:
-    repository: $(imageName)
-    command: build
-    Dockerfile: bulletin-board-app/Dockerfile
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:  
+  - job: Build
+    displayName: Build job
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageName)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(boostRegistryServiceConnection)
+        tags: |
+          latest
