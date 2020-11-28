@@ -7,6 +7,7 @@ pool:
 variables:
   imageName: 'appxx.azurecr.io/appxx-img'
   dockerfilePath: 'bulletin-board-app/Dockerfile'
+  dockerRegistryServiceConnection: boostRegistryServiceConnection
 
 stages:
 - stage: Build
@@ -21,6 +22,6 @@ stages:
         command: buildAndPush
         repository: $(imageName)
         dockerfile: $(dockerfilePath)
-        containerRegistry: $(boostRegistryServiceConnection)
+        containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           latest
