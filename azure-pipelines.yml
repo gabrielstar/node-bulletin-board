@@ -59,7 +59,7 @@ variables:
   imageName: 'appxx-img'
   dockerfilePath: 'bulletin-board-app/Dockerfile'
   dockerRegistryServiceConnection: boostRegistryServiceConnection
-  armServiceConnection: boostAzureServiceConnection
+  armServiceConnectionBoost: boostAzureServiceConnection
   appName: appxx
   container: appxx.azurecr.io/appxx-img:latest
   #crux
@@ -77,7 +77,7 @@ variables:
   cruxRepoName: crux
   scenario: $(repoName)/${{ parameters.jmx }}
   #parameters of cluster if to be created (jmeter_dynamic)
-  armServiceConnection2: ${{ parameters.arm_service_connection }}
+  armServiceConnection: ${{ parameters.arm_service_connection }}
   clusterNodeSize: Standard_D2_v2
   clusterNodeNumber: 2
   rgroup: jmeter-group
@@ -111,7 +111,7 @@ stages:
     - task: AzureWebAppContainer@1 # Add this at the end of your file
       displayName: Deploy
       inputs:
-        azureSubscription: '$(armServiceConnection)'
+        azureSubscription: '$(armServiceConnectionBoost)'
         appName: '$(appname)'
         containers: $(container)
 
