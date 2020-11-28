@@ -31,7 +31,7 @@ parameters:
     type: string
 
   - name: kubernetes_service_connection
-    default: _
+    default: k8
     type: string
 
   - name: arm_service_connection
@@ -95,9 +95,12 @@ stages:
         azureSubscription: '$(armServiceConnection)'
         appName: '$(appname)'
         containers: $(container)
-   
+
 - stage: E2E_Tests
   displayName: E2E Selenium Tests
+
+- stage: E2E_Tests
+  displayName: E2E Performance Tests
   variables:
     #test execution environment & config
     cluster_namespace: crux$(Build.BuildID)
