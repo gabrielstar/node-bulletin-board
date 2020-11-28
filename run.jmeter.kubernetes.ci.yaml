@@ -35,8 +35,6 @@ parameters:
     type: string
 
 
-
-jobs:
 variables:
   #test execution environment & config
   cluster_namespace: crux$(Build.BuildID)
@@ -51,8 +49,6 @@ variables:
   repoName: node-bulletin-board
   cruxRepoName: crux
   scenario: $(repoName)/${{ parameters.jmx }}
-
-
   #parameters of cluster if to be created (jmeter_dynamic)
   armServiceConnection: ${{ parameters.arm_service_connection }}
   clusterNodeSize: Standard_D2_v2
@@ -60,6 +56,8 @@ variables:
   rgroup: jmeter-group
   namespace: default
 
+
+jobs:
   - template: run.jmeter.kubernetes.template.yaml
     parameters:
       mode: ${{ parameters.mode }}
