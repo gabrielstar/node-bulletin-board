@@ -1,5 +1,5 @@
 trigger: none
-#- master
+- base
 
 pool:
   vmImage: 'Ubuntu-16.04'
