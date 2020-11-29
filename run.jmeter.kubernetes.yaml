@@ -1,0 +1,90 @@
+# This pipeline requires azure service connection of type "kubernetes service"
+# Remember to have 1-1 jmeter service to k8 node (VM)/pod ratio - otherwsie some slaves can crash due to lack of resources
+
+name: $(BuildID)
+trigger: none
+resources:
+  repositories:
+    - repository: crux
+      type: github
+      name: ObjectivityLtd/crux
+      #ref: refs/tags/0.4.1
+      ref: refs/heads/feature/parametrization
+      endpoint: crux
+
+    - repository: tests
+      type: github
+      name: gabrielstar/node-bulletin-board
+      #ref: refs/tags/0.3.2
+      #ref: refs/heads/feature/parametrization
+      #ref: refs/tags/0.4.1
+      endpoint: crux
+
+
+parameters:
+
+- name: mode
+  default: jmeter
+  values:
+    - jmeter
+    - jmeter_with_dynamic_pools
+    - jmeter_dynamic
+    - tests
+
+- name: data_dir
+  type: string
+  default: path/to/jmeter/test_data
+
+- name: jmeter_slaves
+  default: 1
+  type: number
+
+- name: jmx
+  default: path/to/jmeter/script/bulletin.jmx
+  type: string
+
+- name: jmeter_args
+  default: "-Gthreads=1 -Gloops=1 -Gdata_dir=/shared"
+  type: string
+
+- name: kubernetes_service_connection
+  default: _
+  type: string
+
+- name: arm_service_connection
+  default: _
+  type: string
+
+variables:
+  #test execution environment & config
+  cluster_namespace: crux$(Build.BuildID)
+  kubernetesServiceConnection: ${{ parameters.kubernetes_service_connection }}
+  scale_up_replicas: ${{ parameters.jmeter_slaves }}
+  data_dir: $(repoName)/${{ parameters.data_dir }}
+  data_dir_relative: ${{ parameters.data_dir }}
+  crux_file: $(repoName)/path/to/jmeter/config/crux.properties
+  thresholds_file: $(repoName)/path/to/jmeter/config/thresholds.properties
+  workbooks_file: $(repoName)/path/to/jmeter/config/workbooks.properties
+  jmeter_args: ${{ parameters.jmeter_args }}
+  repoName: node-bulletin-board
+  cruxRepoName: crux
+  scenario: $(repoName)/${{ parameters.jmx }}
+
+
+  #parameters of cluster if to be created (jmeter_dynamic)
+  armServiceConnection: ${{ parameters.arm_service_connection }}
+  clusterNodeSize: Standard_D2_v2
+  clusterNodeNumber: 2
+  rgroup: az900
+  cluster_name: k8
+  namespace: default
+
+jobs:
+  - template: run.jmeter.kubernetes.template.yaml
+    parameters:
+      mode: ${{ parameters.mode }}
+      linux_pool: microsoft_hosted
+      arm_service_connection: ${{ parameters.arm_service_connection }}
+      kubernetes_service_connection: ${{ parameters.kubernetes_service_connection }}
+      crux_job_timeout: 15
+      step_timeout: 2
