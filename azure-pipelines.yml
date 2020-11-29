@@ -80,7 +80,8 @@ variables:
   armServiceConnection: ${{ parameters.arm_service_connection }}
   clusterNodeSize: Standard_D2_v2
   clusterNodeNumber: 2
-  rgroup: jmeter-group
+  rgroup: boost
+  cluster_name: k8
   namespace: default
 
 stages:
