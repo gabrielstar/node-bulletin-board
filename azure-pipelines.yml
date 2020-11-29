@@ -18,7 +18,7 @@ resources:
       type: github
       name: gabrielstar/node-bulletin-board
       #ref: refs/tags/0.3.2
-      #ref: refs/heads/feature/parametrization
+      ref: refs/heads/base
       #ref: refs/tags/0.4.1
       endpoint: crux
 
