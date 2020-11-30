@@ -1,18 +1,18 @@
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jmeter-master
+  name: jmeter-slaves
   labels:
-    crux.jmeter_mode: master
+    crux.jmeter_mode: slave
 spec:
   replicas: 1
   selector:
     matchLabels:
-      crux.jmeter_mode: master
+      crux.jmeter_mode: slave
   template:
     metadata:
       labels:
-        crux.jmeter_mode: master
+        crux.jmeter_mode: slave
     spec:
       affinity: #schedule where master does NOT run
         nodeAffinity:
@@ -37,21 +37,22 @@ spec:
                   - master
                   - slave
             topologyKey: "kubernetes.io/hostname"
-      containers:
-      - name: jmmaster
-        image: gabrielstar/crux-master:0.0.1
-        imagePullPolicy: IfNotPresent
-        command: [ "/bin/bash", "-c", "--" ]
-        args: [ "while true; do sleep 30; done;" ]
-        volumeMounts:
-          - name: loadtest
-            mountPath: /load_test
-            subPath: "load_test"
-
-        ports:
-        - containerPort: 60000
-        - containerPort: 9191
       volumes:
-      - name: loadtest 
-        configMap:
-         name: jmeter-load-test
+        - name: dshm
+          emptyDir:
+            medium: Memory
+        - name: jmeter-shared-disk
+          persistentVolumeClaim:
+            claimName: jmeter-shared-disk
+      containers:
+      - name: jmslave
+        image: gabrielstar/crux-slave:0.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 1099
+        - containerPort: 50000
+        volumeMounts:
+          - mountPath: /dev/shm
+            name: dshm
+          - mountPath: "/shared"
+            name: jmeter-shared-disk

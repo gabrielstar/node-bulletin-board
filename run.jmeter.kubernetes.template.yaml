@@ -75,7 +75,9 @@ jobs:
 
       - ${{ if and(eq(parameters.mode, 'jmeter_with_dynamic_pools'),ne(parameters.kubernetes_service_connection,'_'),ne(parameters.arm_service_connection,'_')) }}:
           - template: ${{ parameters.CUSTOM_crux_templates }}/steps/step.override_deployment_rules.yaml
-          - template: ${{ parameters.CUSTOM_crux_templates }}/steps/step.create_nodepool.yaml
+          - template: ${{ parameters.crux_templates }}/steps/step.create_nodepool.yaml@crux
+            parameters:
+              mode: ${{ parameters.mode }}
           - template: ${{ parameters.crux_templates }}/steps/step.configure_cluster.yaml@crux
           - template: ${{ parameters.crux_templates }}/steps/step.create_namespace.yaml@crux
           - template: ${{ parameters.crux_templates }}/steps/step.deploy_to_cluster.yaml@crux
@@ -89,14 +91,16 @@ jobs:
           - template: ${{ parameters.crux_templates }}/steps/step.junit.yaml@crux
           - template: ${{ parameters.crux_templates }}/steps/step.junit_publish.yaml@crux
           - template: ${{ parameters.crux_templates }}/steps/step.delete_namespace.yaml@crux
-          - template: ${{ parameters.CUSTOM_crux_templates }}/steps/step.delete_nodepool.yaml
+          - template: ${{ parameters.crux_templates }}/steps/step.delete_nodepool.yaml@crux
+            parameters:
+              mode: ${{ parameters.mode }}
 
       - ${{ if and(eq(parameters.mode, 'jmeter_dynamic'),ne(parameters.arm_service_connection,'_')) }}:
           - template: ${{ parameters.CUSTOM_crux_templates }}/steps/step.override_deployment_rules.yaml
           - template: ${{ parameters.crux_templates }}/steps/step.create_cluster.yaml@crux
+          - template: ${{ parameters.crux_templates }}/steps/step.create_nodepool.yaml@crux
             parameters:
-              timeoutInMinutes: 7
-          - template: ${{ parameters.CUSTOM_crux_templates }}/steps/step.create_nodepool.yaml
+              mode: ${{ parameters.mode }}
           - template: ${{ parameters.crux_templates }}/steps/step.create_namespace.yaml@crux
           - template: ${{ parameters.crux_templates }}/steps/step.deploy_to_cluster.yaml@crux
           - template: ${{ parameters.crux_templates }}/steps/step.jmeter_tests.yaml@crux
@@ -109,7 +113,9 @@ jobs:
           - template: ${{ parameters.crux_templates }}/steps/step.junit.yaml@crux
           - template: ${{ parameters.crux_templates }}/steps/step.junit_publish.yaml@crux
           - template: ${{ parameters.crux_templates }}/steps/step.delete_namespace.yaml@crux
-          - template: ${{ parameters.CUSTOM_crux_templates }}/steps/step.delete_nodepool.yaml
+          - template: ${{ parameters.crux_templates }}/steps/step.delete_nodepool.yaml@crux
+            parameters:
+              mode: ${{ parameters.mode }}
           - template: ${{ parameters.crux_templates }}/steps/step.delete_cluster.yaml@crux
 
 
@@ -119,6 +125,9 @@ jobs:
         - template: ${{ parameters.crux_templates }}/mocks/step.tests_clone.yaml@crux
         - template: ${{ parameters.crux_templates }}/mocks/step.prepare_tests.yaml@crux
         - template: ${{ parameters.crux_templates }}/mocks/step.create_cluster.yaml@crux
+        - template: ${{ parameters.crux_templates }}/mocks/step.create_nodepool.yaml@crux
+          parameters:
+            mode: ${{ parameters.mode }}
         - template: ${{ parameters.crux_templates }}/mocks/step.configure_cluster.yaml@crux
         - template: ${{ parameters.crux_templates }}/mocks/step.create_namespace.yaml@crux
         - template: ${{ parameters.crux_templates }}/mocks/step.deploy_to_cluster.yaml@crux
@@ -132,6 +141,10 @@ jobs:
         - template: ${{ parameters.crux_templates }}/mocks/step.junit.yaml@crux
         - template: ${{ parameters.crux_templates }}/mocks/step.junit_publish.yaml@crux
         - template: ${{ parameters.crux_templates }}/mocks/step.delete_namespace.yaml@crux
+        - template: ${{ parameters.crux_templates }}/mocks/step.delete_nodepool.yaml@crux
+          parameters:
+            mode: ${{ parameters.mode }}
+        - template: ${{ parameters.crux_templates }}/mocks/step.delete_cluster.yaml@crux
         - template: ${{ parameters.crux_templates }}/mocks/step.delete_cluster.yaml@crux
 
   #RUN on framework tests
