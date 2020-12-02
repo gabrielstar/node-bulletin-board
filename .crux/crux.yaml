@@ -1,9 +1,5 @@
 name: $(BuildID)
-trigger:
-  batch: 'true'
-  branches:
-    include:
-      - '*'
+trigger: none
 
 #specify where your tests reside, set both crux and tests version
 resources:
