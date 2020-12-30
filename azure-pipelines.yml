@@ -104,6 +104,7 @@ stages:
         sudo npm  install
         export CHROME_PATH=$(which google-chrome-stable)
         export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
+        export LHCI_BUILD_CONTEXT__CURRENT_BRANCH=$(Build.SourceBranchName) #otherwise upload will fail
         sudo npm install -g @lhci/cli@0.6.x
         lhci autorun
       displayName: Lighthouse tests
