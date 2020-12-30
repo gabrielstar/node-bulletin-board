@@ -101,11 +101,12 @@ stages:
         # Install NodeJS and Google Chrome
         sudo apt-get update
         sudo apt-get install -y nodejs google-chrome-stable
+        ls
+        cd bulletin-board-app
         npm  install
         export CHROME_PATH=$(which google-chrome-stable)
         export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
         npm install -g @lhci/cli@0.6.x
-        cd bulletin-board-app
         lhci autorun
       displayName: Lighthouse tests
 
