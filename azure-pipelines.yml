@@ -89,7 +89,7 @@ stages:
   displayName: Test, Build and Push docker image
   jobs:
   - job: Build
-    displayName: Build job
+    displayName: Test, Build, Push
     steps:
     - bash: | #this can be run inside docker image
         echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google.list
@@ -103,10 +103,10 @@ stages:
         sudo apt-get install -y nodejs google-chrome-stable
         ls
         cd bulletin-board-app
-        npm  install
+        sudo npm  install
         export CHROME_PATH=$(which google-chrome-stable)
         export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
-        npm install -g @lhci/cli@0.6.x
+        sudo npm install -g @lhci/cli@0.6.x
         lhci autorun
       displayName: Lighthouse tests
 
