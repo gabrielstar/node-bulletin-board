@@ -13,8 +13,8 @@ module.exports = {
             token: '17f9e085-5287-418d-8ad5-d56fdd99c72e', // could also use LHCI_TOKEN variable instead
             ignoreDuplicateBuildFailure: true //to be able to run w/o git commit
         },
-        assert: {
-            preset: 'lighthouse:recommended',
-        },
+        // assert: {
+        //     preset: 'lighthouse:recommended',
+        // },
     },
 };
