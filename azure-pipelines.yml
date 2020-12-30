@@ -92,8 +92,22 @@ stages:
     displayName: Build job
     steps:
     - bash: |
-        echo "I would run unit,integration tests here"
-      displayName: Unit and Integration Tests
+        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google.list
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+
+        # Add Node's apt-key
+        curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+
+        # Install NodeJS and Google Chrome
+        sudo apt-get update
+        sudo apt-get install -y nodejs google-chrome-stable
+        npm  install
+        export CHROME_PATH=$(which google-chrome-stable)
+        export LHCI_BUILD_CONTEXT__EXTERNAL_BUILD_URL="$BUILD_URL"
+        npm install -g @lhci/cli@0.6.x
+        cd bulletin-board-app
+        lhci autorun
+      displayName: Lighthouse tests
 
     - task: Docker@2
       displayName: Build and push an image to container registry
